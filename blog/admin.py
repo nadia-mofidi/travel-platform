@@ -1,6 +1,7 @@
 from django.contrib import admin
 from blog.models import Post,Category,Comment
 from django_summernote.admin import SummernoteModelAdmin
+from django.contrib.auth.models import User
 # Register your models here.
 
 class PostAdmin(SummernoteModelAdmin):
@@ -12,6 +13,13 @@ class PostAdmin(SummernoteModelAdmin):
     search_fields=['title' ,'content']
     summernote_fields = ('content',)
     list_display_links = ('status','is_featured','login_require')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author":
+            kwargs["queryset"] = User.objects.filter(
+                groups__name="Authors"
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class CommentAdmin(admin.ModelAdmin):
     date_hierarchy='create_date'
