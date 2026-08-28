@@ -156,9 +156,13 @@
 							<div class="widget-wrap">
 
 								{% include 'blog/blog-search.html' %}
-								   
-								
 
+								{% if author %}
+									{% with writer=author %}
+   							    		{% include 'blog/blog-writer.html' %}
+									{% endwith %}
+								{% endif %}
+								
 								{% comment %} {% include 'blog/blog-popular-post.html' %} {% endcomment %}
 
 								{% comment %} {% include 'blog/blog-ads.html' %} {% endcomment %}

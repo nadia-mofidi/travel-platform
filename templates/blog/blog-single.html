@@ -155,7 +155,9 @@
 							<div class="widget-wrap">
 								{% include 'blog/blog-search.html' %}
 								
-								{% include 'blog/blog-writer.html' %}
+								{% with writer=post.author %}
+   							    	{% include 'blog/blog-writer.html' %}
+								{% endwith %}
 
 								{% include 'blog/blog-ads.html' %}
 

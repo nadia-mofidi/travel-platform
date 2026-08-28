@@ -5,6 +5,7 @@ from django.db.models import F
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger,InvalidPage
 from blog.forms import CommentForm
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
@@ -14,8 +15,10 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
         post.save()
     if cat_name:
         posts = posts.filter(category__name = cat_name)
+    author = None
     if auth_username:
         posts = posts.filter(author__username = auth_username)
+        author = User.objects.get(username=auth_username)
     if kwargs.get('tag_name'):
         posts = posts.filter(tags__name = kwargs['tag_name'])
 
@@ -29,7 +32,7 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
         posts = posts.page(1)
     except InvalidPage:
         posts = posts.page(1)
-    context={'posts':posts}
+    context={'posts':posts,'author':author}
     return render(request,"blog/blog-home.html",context)
 
 def blog_single (request,pid):
