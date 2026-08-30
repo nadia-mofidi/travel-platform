@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Profile
 
 class SignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=150, required=True)
@@ -18,9 +19,7 @@ class SignupForm(UserCreationForm):
             'password2',
         )
 
-from django import forms
-from django.contrib.auth.models import User
-from .models import Profile
+
 
 
 class UserProfileForm(forms.ModelForm):
@@ -41,3 +40,19 @@ class ProfileForm(forms.ModelForm):
             'github',
             'behance',
         ]
+
+    def __init__(self, *args, is_author=False, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if not is_author:
+            author_fields = [
+                'job_title',
+                'bio',
+                'facebook',
+                'twitter',
+                'github',
+                'behance',
+            ]
+
+            for field in author_fields:
+                self.fields.pop(field)
