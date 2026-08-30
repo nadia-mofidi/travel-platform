@@ -165,4 +165,5 @@ INTERNAL_IPS = [
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+# Authentication
 LOGIN_URL = 'accounts:login'
