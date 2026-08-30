@@ -45,7 +45,7 @@ def logout_view(request):
 def edit_profile_view(request):
 
     is_author = request.user.groups.filter(
-        name='Author'
+        name='Authors'
     ).exists()
 
     if request.method == 'POST':
@@ -80,5 +80,5 @@ def edit_profile_view(request):
 
 @login_required
 def profile_view(request):
-    
+
     return render(request,'accounts/profile.html')
