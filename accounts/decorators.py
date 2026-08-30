@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.core. exceptions import PermissionDenied
 
+def author_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.groups.filter(name='Authors').exists():
+            raise PermissionDenied
 
-def is_author(user):
-    return user.groups.filter(name='Authors').exists()
+        return view_func(request, *args, **kwargs)
 
-
-author_required = user_passes_test(
-    is_author,
-    login_url='accounts:login'
-)
+    return wrapper

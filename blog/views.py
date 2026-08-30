@@ -6,6 +6,8 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger,InvalidPa
 from blog.forms import CommentForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from accounts.decorators import author_required
 
 def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
@@ -72,7 +74,11 @@ def blog_search(request):
     context={'posts':posts}
     return render(request,"blog/blog-home.html",context)
 
-def test_view(request):
-    # post=Post.objects.get(id=pid)
+@login_required
+@author_required
+def author_dashboard(request):
 
-    return render(request,"test.html")
+    posts = Post.objects.filter(author=request.user)
+    context = {'posts': posts,}
+    
+    return render(request,'blog/author-dashboard.html',context)
