@@ -1,0 +1,35 @@
+{% if request.user.profile.avatar %}
+    <img src="{{ request.user.profile.avatar.url }}" alt="Profile Avatar">
+{% endif %}
+
+<h2>
+    {{ request.user.get_full_name|default:request.user.username }}
+</h2>
+
+<p>Username: {{ request.user.username }}</p>
+<p>Email: {{ request.user.email }}</p>
+
+{% if is_author %}
+    <p>Job Title: {{ request.user.profile.job_title }}</p>
+    <p>Bio: {{ request.user.profile.bio }}</p>
+
+    {% if request.user.profile.facebook %}
+        <p>Facebook: {{ request.user.profile.facebook }}</p>
+    {% endif %}
+
+    {% if request.user.profile.twitter %}
+        <p>Twitter: {{ request.user.profile.twitter }}</p>
+    {% endif %}
+
+    {% if request.user.profile.github %}
+        <p>GitHub: {{ request.user.profile.github }}</p>
+    {% endif %}
+
+    {% if request.user.profile.behance %}
+        <p>Behance: {{ request.user.profile.behance }}</p>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'accounts:edit-profile' %}">
+    Edit Profile
+</a>

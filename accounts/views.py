@@ -80,5 +80,8 @@ def edit_profile_view(request):
 
 @login_required
 def profile_view(request):
+    is_author = request.user.groups.filter(name='Authors').exists()
 
-    return render(request,'accounts/profile.html')
+    context = {'is_author': is_author,}
+
+    return render(request,'accounts/profile.html',context)
