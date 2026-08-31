@@ -126,3 +126,14 @@ def edit_post(request, pid):
     context = {'form': form,'post': post,}
 
     return render(request,'blog/edit-post.html',context)
+
+@login_required
+@author_required
+def delete_post(request, pid):
+    post = get_object_or_404(Post, id=pid, author=request.user)
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('blog:dashboard')
+
+    return render(request, 'blog/delete-post.html', {'post': post})
