@@ -12,4 +12,5 @@ urlpatterns = [
     
     path("dashboard/", author_dashboard, name="dashboard"),
     path("dashboard/create/",create_post,name="create_post"),
+    path("dashboard/<int:pid>/edit/", edit_post, name="edit_post"),
 ]
