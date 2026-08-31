@@ -121,6 +121,11 @@
 							</div>
 							<div class="comment-form">
 								<h4>Leave a Comment</h4>
+								{% if request.user.is_authenticated %}
+    								<p>
+    								    Commenting as <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+    								</p>
+								{% endif %}
 								<form method="post" action='{% url "blog:single" pid=post.id %}'>
 									{% csrf_token %}
 									<div class="form-group form-inline">
