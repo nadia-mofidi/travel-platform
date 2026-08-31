@@ -4,8 +4,17 @@
     <ul>
         {% for post in posts %}
             <li>
-                {{ post.title }}
-                — {{ post.publish_date }}
+                <strong>{{ post.title }}</strong>
+                <br>
+                Published: {{ post.publish_date }}
+                <br>
+                <a href="#">
+                    Edit
+                </a>
+                |
+                <a href="#">
+                    Delete
+                </a>
             </li>
         {% endfor %}
     </ul>
