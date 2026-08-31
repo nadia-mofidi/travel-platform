@@ -53,7 +53,7 @@ def blog_single (request,pid):
             comment = form.save(commit=False)
             comment.post = post
             form.save()
-            messages.add_message(request,messages.SUCCESS,'Your comment is submitted successfully')
+            messages.add_message(request,messages.SUCCESS,'Your comment has been submitted and is awaiting approval.')
             return redirect('blog:single', pid=post.id)
         else:
             messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
