@@ -55,7 +55,7 @@ def blog_single (request,pid):
             comment.post = post
             
             if request.user.is_authenticated:
-                comment.name = request.user.first_name
+                comment.name = request.user.get_full_name() or request.user.username
                 comment.email = request.user.email
 
             form.save()
