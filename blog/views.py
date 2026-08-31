@@ -49,17 +49,24 @@ def blog_single (request,pid):
 
     if request.method=="POST":
         form = CommentForm(request.POST)
+
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
+            
+            if request.user.is_authenticated:
+                comment.name = request.user.first_name
+                comment.email = request.user.email
+
             form.save()
             messages.add_message(request,messages.SUCCESS,'Your comment has been submitted and is awaiting approval.')
+            
             return redirect('blog:single', pid=post.id)
         else:
             messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
     else:
         form = CommentForm()
-        
+
     context = {'post': post,"next_post":next_post,
                "prev_post":prev_post,"comments":comments,'form':form}  
     # افزایش تعداد بازدید
