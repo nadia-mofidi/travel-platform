@@ -106,3 +106,23 @@ def create_post(request):
     context = {'form': form,}
 
     return render(request,'blog/create-post.html',context)
+
+@login_required
+@author_required
+def edit_post(request, pid):
+
+    post = get_object_or_404(Post,id=pid,author=request.user)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST,request.FILES,instance=post)
+
+        if form.is_valid():
+            form.save()
+            return redirect('blog:dashboard')
+
+    else:
+        form = PostForm(instance=post)
+
+    context = {'form': form,'post': post,}
+
+    return render(request,'blog/edit-post.html',context)
