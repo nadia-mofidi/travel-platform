@@ -2,8 +2,8 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
 from blog.models import Post,Comment
 from django.db.models import F,Q
-from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger,InvalidPage
-from blog.forms import CommentForm
+from django.core.paginator import Paginator
+from blog.forms import CommentForm,PostForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -80,5 +80,29 @@ def author_dashboard(request):
 
     posts = Post.objects.filter(author=request.user)
     context = {'posts': posts,}
-    
+
     return render(request,'blog/author-dashboard.html',context)
+
+@login_required
+@author_required
+def create_post(request):
+
+    if request.method == 'POST':
+        form = PostForm(request.POST,request.FILES)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+
+            post.author = request.user
+            post.save()
+
+            form.save_m2m()
+
+            return redirect('blog:dashboard')
+
+    else:
+        form = PostForm()
+
+    context = {'form': form,}
+
+    return render(request,'blog/create-post.html',context)
