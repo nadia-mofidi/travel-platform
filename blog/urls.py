@@ -10,5 +10,5 @@ urlpatterns = [
     path("search/",blog_search,name='search'),
     path("tags/<str:tag_name>/",blog_view,name='tags'),
     path("dashboard/", author_dashboard, name="dashboard"),
-
+    path("dashboard/create/",create_post,name="create_post"),
 ]
