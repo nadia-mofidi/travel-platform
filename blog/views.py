@@ -99,7 +99,7 @@ def create_post(request):
             form.save_m2m()
 
             return redirect('blog:dashboard')
-
+        
     else:
         form = PostForm()
 
