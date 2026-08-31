@@ -8,7 +8,7 @@
                 <br>
                 Published: {{ post.publish_date }}
                 <br>
-                <a href="#">
+                <a href="{% url "blog:edit-post" pid=post.id %}">
                     Edit
                 </a>
                 |
