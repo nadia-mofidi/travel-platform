@@ -57,8 +57,9 @@ def blog_single (request,pid):
             return redirect('blog:single', pid=post.id)
         else:
             messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
-
-    form = CommentForm()
+    else:
+        form = CommentForm()
+        
     context = {'post': post,"next_post":next_post,
                "prev_post":prev_post,"comments":comments,'form':form}  
     # افزایش تعداد بازدید
