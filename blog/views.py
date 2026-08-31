@@ -48,7 +48,7 @@ def blog_single (request,pid):
     comments = Comment.objects.filter( post=post, approved=True ).order_by("-create_date")
 
     if request.method=="POST":
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST, user=request.user)
 
         if form.is_valid():
             comment = form.save(commit=False)
@@ -65,7 +65,7 @@ def blog_single (request,pid):
         else:
             messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
     else:
-        form = CommentForm()
+        form = CommentForm( user=request.user)
 
     context = {'post': post,"next_post":next_post,
                "prev_post":prev_post,"comments":comments,'form':form}  

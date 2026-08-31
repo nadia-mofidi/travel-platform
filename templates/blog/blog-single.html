@@ -125,16 +125,14 @@
 									{% csrf_token %}
 									<div class="form-group form-inline">
 									  <div class="form-group col-lg-6 col-md-12 name">
-										{% if request.user.is_authenticated %}
-								<input type="hidden" class="form-control" value={{request.user.first_name}} name="name" >
-										{% else %}
+										{% if not request.user.is_authenticated %}
+								
 								<input type="text" class="form-control" name="name" value="{{ form.name.value|default:'' }}" placeholder="Enter Name">									  
 										{% endif %}
 									  </div>
 									  <div class="form-group col-lg-6 col-md-12 email">
-										{% if request.user.is_authenticated %}
-								<input type="hidden" class="form-control" value={{request.user.email}} name="email" >
-										{% else %}
+										{% if not request.user.is_authenticated %}
+								
 								<input type="text" class="form-control" name="email" value="{{ form.email.value|default:'' }}" placeholder="Enter email address">										
 										{% endif %}
 									   </div>										
