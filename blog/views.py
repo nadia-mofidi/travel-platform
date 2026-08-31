@@ -30,7 +30,7 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
 def blog_single (request,pid):
     
-    post = get_object_or_404(Post, pk=pid,status=1)
+    post = get_object_or_404(Post, pk=pid, status=True, publish_date__lte=timezone.now())
     if post.login_require==True and not request.user.is_authenticated:
         return redirect('accounts:login')
     #-----------
