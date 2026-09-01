@@ -42,7 +42,7 @@
 										<p class="user-name col-lg-12 col-md-12 col-6"><a href="{% url 'blog:author' auth_username=post.author.username %}">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
 										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.publish_date|date:"Y,n,j - G:i"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
-										<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{% comments_count post.id %} Comments</a> <span class="lnr lnr-bubble"></span></p>
+										<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{post.comment_count}} Comments</a> <span class="lnr lnr-bubble"></span></p>
 										<ul class="social-links col-lg-12 col-md-12 col-6">
 											<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 											<li><a href="#"><i class="fa fa-twitter"></i></a></li>

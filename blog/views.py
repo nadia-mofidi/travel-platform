@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
 from blog.models import Post,Comment
-from django.db.models import F,Q
+from django.db.models import F,Q,Count
 from django.core.paginator import Paginator
 from blog.utils import paginate_queryset
 from blog.forms import CommentForm,PostForm
@@ -12,7 +12,11 @@ from accounts.decorators import author_required
 import re
 def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
-    posts=Post.objects.filter(status=1,publish_date__lte=timezone.now()).order_by('-publish_date')
+    posts = Post.objects.filter(status=1,publish_date__lte=timezone.now()).select_related('author'
+).prefetch_related(
+    'category'
+).order_by('-publish_date') 
+    posts = posts.annotate(comment_count=Count('comment',filter=Q(comment__approved=True)))   
     if cat_name:
         posts = posts.filter(category__name = cat_name)
     author = None
@@ -28,8 +32,9 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
     return render(request,"blog/blog-home.html",context)
 
 def blog_single (request,pid):
-    
-    post = get_object_or_404(Post, pk=pid, status=True, publish_date__lte=timezone.now())
+    query_set = Post.objects.annotate(comment_count=Count('comment',filter=Q(comment__approved=True)))
+    post = get_object_or_404(query_set, pk=pid, status=True, publish_date__lte=timezone.now())
+
     if post.login_require==True and not request.user.is_authenticated:
         return redirect('accounts:login')
     #-----------
@@ -57,7 +62,7 @@ def blog_single (request,pid):
                 comment.name = request.user.get_full_name() or request.user.username
                 comment.email = request.user.email
 
-            form.save()
+            comment.save()
             messages.add_message(request,messages.SUCCESS,'Your comment has been submitted and is awaiting approval.')
             
             return redirect('blog:single', pid=post.id)
