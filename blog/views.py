@@ -85,7 +85,10 @@ def blog_single (request,pid):
     return render(request,"blog/blog-single.html",context)
 
 def blog_search(request):
-    posts=Post.objects.filter(status=1,publish_date__lte=timezone.now()).order_by('-publish_date')
+    posts = Post.objects.filter(status=True,publish_date__lte=timezone.now()
+    ).select_related('author').prefetch_related('category'
+    ).annotate(comment_count=Count('comment',filter=Q(comment__approved=True))
+    ).order_by('-publish_date')
 
     if s:=request.GET.get('s'):
         search_term = re.escape(s)
