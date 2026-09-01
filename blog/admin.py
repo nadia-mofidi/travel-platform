@@ -12,7 +12,7 @@ class PostAdmin(SummernoteModelAdmin):
    # ordering=["-create_date"]#minus befor field name makes it descending
     search_fields=['title' ,'content']
     summernote_fields = ('content',)
-    list_display_links = ('status','is_featured','login_require')
+    list_display_links = ('id','title','author')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":
