@@ -22,7 +22,7 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
     author = None
     if auth_username:
         posts = posts.filter(author__username = auth_username)
-        author = get_object_or_404(User,username=auth_username)
+        author = get_object_or_404(User.objects.select_related('profile'),username=auth_username)
     if kwargs.get('tag_name'):
         posts = posts.filter(tags__name = kwargs['tag_name'])
     #paginator

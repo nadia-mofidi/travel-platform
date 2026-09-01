@@ -10,7 +10,7 @@
 {% endif %}
 <div class="single-sidebar-widget user-info-widget">
 	<img src="{{writer.profile.avatar.url}}" alt="">
-	<a href="#"><h4>{{post.author.get_full_name}}</h4></a>
+	<a href="#"><h4>{{writer.get_full_name}}</h4></a>
 	<p>
 		{{writer.profile.job_title}}
 	</p>
