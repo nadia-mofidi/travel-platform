@@ -32,7 +32,7 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
     return render(request,"blog/blog-home.html",context)
 
 def blog_single (request,pid):
-    query_set = Post.objects.select_related('author').prefetch_related('category'
+    query_set = Post.objects.select_related('author__profile').prefetch_related('category'
 ).annotate(comment_count=Count('comment',filter=Q(comment__approved=True)))
     
     post = get_object_or_404(query_set, pk=pid, status=True, publish_date__lte=timezone.now())
