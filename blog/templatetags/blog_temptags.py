@@ -5,12 +5,12 @@ register = template.Library()
 
 @register.inclusion_tag('blog/blog-popular-post.html')
 def popularposts():
-    posts = Post.objects.filter(status=1).order_by("-counted_views")[:4]
+    posts = Post.objects.filter(status=1,publish_date__lte=timezone.now()).order_by("-counted_views")[:4]
     return {'posts': posts}
 
 @register.inclusion_tag('blog/blog-post-categories.html')
 def postcategories():
-    posts = Post.objects.filter(status=1)
+    posts = Post.objects.filter(status=1,publish_date__lte=timezone.now())
     categories=Category.objects.all()
     cat_dict={}
     for cat in categories:
