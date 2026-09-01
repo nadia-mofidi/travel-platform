@@ -72,13 +72,15 @@ def blog_single (request,pid):
             messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
     else:
         form = CommentForm( user=request.user)
-
+    
+    # افزایش تعداد بازدید
+    Post.objects.filter(pk=post.pk).update(counted_views=F('counted_views') + 1)
+    post.counted_views += 1
+    
+    
     context = {'post': post,"next_post":next_post,
                "prev_post":prev_post,"comments":comments,'form':form}  
-    # افزایش تعداد بازدید
-    post.counted_views = F('counted_views') + 1
-    post.save(update_fields=['counted_views'])
-    post.refresh_from_db()
+    
 
     return render(request,"blog/blog-single.html",context)
 
