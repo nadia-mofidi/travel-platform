@@ -6,8 +6,8 @@ register = template.Library()
 
 @register.inclusion_tag('website/website-recent-posts.html')
 def recentposts():
-    posts = Post.objects.filter(status=True,
-    publish_date__lte=timezone.now()).order_by("-publish_date")[:6]
+    posts = Post.objects.filter(status=True,publish_date__lte=timezone.now()
+    ).prefetch_related('category').order_by("-publish_date")[:6]
     return {'posts': posts}
 
 @register.inclusion_tag('website/website-featured-posts.html')
