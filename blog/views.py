@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import author_required
-
+import re
 def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
     posts=Post.objects.filter(status=1,publish_date__lte=timezone.now()).order_by('-publish_date')
@@ -76,10 +76,11 @@ def blog_single (request,pid):
     return render(request,"blog/blog-single.html",context)
 
 def blog_search(request):
-    posts=Post.objects.filter(status=1)
-    if request.method=='GET':
-        if s:=request.GET.get('s'):
-            posts = posts.filter(content__iregex=rf"\b{s}\b")#__contains
+    posts=Post.objects.filter(status=1,publish_date__lte=timezone.now())
+
+    if s:=request.GET.get('s'):
+        search_term = re.escape(s)
+        posts = posts.filter(Q(title__iregex=rf"\b{search_term}\w*") |Q(content__iregex=rf"\b{search_term}\w*"))
     #paginator
     posts = paginate_queryset(posts,request.GET.get('page'))
     
