@@ -3,6 +3,7 @@ from django.utils import timezone
 from blog.models import Post,Comment
 from django.db.models import F,Q
 from django.core.paginator import Paginator
+from blog.utils import paginate_queryset
 from blog.forms import CommentForm,PostForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -20,10 +21,8 @@ def blog_view (request,cat_name=None,auth_username=None,**kwargs):
         author = get_object_or_404(User,username=auth_username)
     if kwargs.get('tag_name'):
         posts = posts.filter(tags__name = kwargs['tag_name'])
-
-    paginator = Paginator(posts,2)
-    page_number=request.GET.get('page')
-    posts = paginator.get_page(page_number)
+    #paginator
+    posts = paginate_queryset(posts,request.GET.get('page'))
    
     context={'posts':posts,'author':author}
     return render(request,"blog/blog-home.html",context)
@@ -81,6 +80,8 @@ def blog_search(request):
     if request.method=='GET':
         if s:=request.GET.get('s'):
             posts = posts.filter(content__iregex=rf"\b{s}\b")#__contains
+    #paginator
+    posts = paginate_queryset(posts,request.GET.get('page'))
     
     context={'posts':posts}
     return render(request,"blog/blog-home.html",context)
