@@ -1,6 +1,6 @@
 from django.test import TestCase
 from blog.models import Post,Category,Comment
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -303,7 +303,7 @@ class BlogViewTest(TestCase):
             status=True,
             publish_date=timezone.now()
         )
-    
+
         response = self.client.post(
             reverse('blog:single', kwargs={'pid': post.id}),
             {
@@ -313,17 +313,42 @@ class BlogViewTest(TestCase):
                 'message': 'This is a test comment.'
             }
         )
-    
+
         self.assertRedirects(
             response,
             reverse('blog:single', kwargs={'pid': post.id})
         )
-    
+
         self.assertTrue(
             Comment.objects.filter(
                 post=post,
                 message='This is a test comment.'
             ).exists()
+        )
+
+    def test_comment_requires_message(self):
+        post = Post.objects.create(
+            title='Test Post',
+            content='Test content',
+            author=self.user,
+            status=True,
+            publish_date=timezone.now()
+        )
+
+        response = self.client.post(
+            reverse('blog:single', kwargs={'pid': post.id}),
+            {
+                'name': 'Test User',
+                'email': 'test@example.com',
+                'subject': 'Test Subject',
+                'message': ''
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertFalse(
+            Comment.objects.filter(post=post).exists()
         )
 
 class AuthenticationTest(TestCase):
@@ -424,3 +449,218 @@ class AuthenticationTest(TestCase):
             '/accounts/login/?next=/accounts/logout/'
         )
 
+    def test_signup_rejects_weak_password(self):
+        response = self.client.post(
+            reverse('accounts:signup'),
+            {
+                'username': 'weakuser',
+                'first_name': 'Weak',
+                'last_name': 'User',
+                'email': 'weak@example.com',
+                'password1': '123',
+                'password2': '123',
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertFalse(
+            User.objects.filter(username='weakuser').exists()
+        )
+
+class AuthorDashboardTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+    def test_create_post_requires_author_permission(self):
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        response = self.client.get(
+            reverse('blog:create_post')
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_author_can_access_create_post(self):
+        author_group = Group.objects.create(name='Authors')
+        self.user.groups.add(author_group)
+
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        response = self.client.get(
+            reverse('blog:create_post')
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_author_can_create_post(self):
+        author_group = Group.objects.create(name='Authors')
+        self.user.groups.add(author_group)
+
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        category = Category.objects.create(name='Technology')
+
+        response = self.client.post(
+            reverse('blog:create_post'),
+            {
+                'title': 'Test Created Post',
+                'content': 'This post was created by a test.',
+                'category': [category.id],
+                'tags': 'django',
+                'status': True,
+                'publish_date': timezone.now(),
+            }
+        )
+
+        self.assertRedirects(
+            response,
+            reverse('blog:dashboard')
+        )
+
+        post = Post.objects.get(title='Test Created Post')
+
+        self.assertEqual(post.author, self.user)
+
+    def test_author_cannot_edit_other_author_post(self):
+        author_group = Group.objects.create(name='Authors')
+
+        other_user = User.objects.create_user(
+            username='otherauthor',
+            password='StrongPass123!'
+        )
+
+        self.user.groups.add(author_group)
+        other_user.groups.add(author_group)
+
+        post = Post.objects.create(
+            title='Other Author Post',
+            content='Other author content.',
+            author=other_user,
+            status=True,
+            publish_date=timezone.now()
+        )
+
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        response = self.client.get(
+            reverse('blog:edit_post', kwargs={'pid': post.id})
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_author_can_edit_own_post(self):
+        author_group = Group.objects.create(name='Authors')
+        self.user.groups.add(author_group)
+
+        post = Post.objects.create(
+            title='Original Title',
+            content='Original content.',
+            author=self.user,
+            status=True,
+            publish_date=timezone.now()
+        )
+
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        category = Category.objects.create(name='Technology')
+
+        response = self.client.post(
+            reverse('blog:edit_post', kwargs={'pid': post.id}),
+            {
+                'title': 'Updated Title',
+                'content': 'Updated content.',
+                'category': [category.id],
+                'tags': 'django',
+                'status': True,
+                'publish_date': timezone.now(),
+            }
+        )
+
+        self.assertRedirects(
+            response,
+            reverse('blog:dashboard')
+        )
+
+        post.refresh_from_db()
+
+        self.assertEqual(post.title, 'Updated Title')
+        self.assertEqual(post.content, 'Updated content.')
+
+    def test_author_cannot_delete_other_author_post(self):
+        author_group = Group.objects.create(name='Authors')
+
+        other_user = User.objects.create_user(
+            username='otherauthor',
+            password='StrongPass123!'
+        )
+
+        self.user.groups.add(author_group)
+        other_user.groups.add(author_group)
+
+        post = Post.objects.create(
+            title='Other Author Post',
+            content='Other author content.',
+            author=other_user,
+            status=True,
+            publish_date=timezone.now()
+        )
+
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+
+        response = self.client.get(
+            reverse('blog:delete_post', kwargs={'pid': post.id})
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_author_can_delete_own_post(self):
+        author_group = Group.objects.create(name='Authors')
+        self.user.groups.add(author_group)
+    
+        post = Post.objects.create(
+            title='Post To Delete',
+            content='This post will be deleted.',
+            author=self.user,
+            status=True,
+            publish_date=timezone.now()
+        )
+    
+        self.client.login(
+            username='normaluser',
+            password='StrongPass123!'
+        )
+    
+        response = self.client.post(
+            reverse('blog:delete_post', kwargs={'pid': post.id})
+        )
+    
+        self.assertRedirects(
+            response,
+            reverse('blog:dashboard')
+        )
+    
+        self.assertFalse(
+            Post.objects.filter(id=post.id).exists()
+        )
