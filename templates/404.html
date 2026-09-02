@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Start 404 Area -->
+<section class="banner-area relative">
+    <div class="overlay overlay-bg"></div>
+
+    <div class="container">
+        <div class="row fullscreen align-items-center justify-content-center">
+
+            <div class="col-lg-8 col-md-10 text-center">
+
+                <h1 class="text-white" style="font-size: 120px; font-weight: 700;">
+                    404
+                </h1>
+
+                <h2 class="text-white mb-20">
+                    Lost on Your Journey?
+                </h2>
+
+                <p class="text-white mb-30">
+                    It looks like you've wandered off the map.
+                    <br>
+                    The destination you're looking for doesn't exist.
+                </p>
+
+                <a href="{% url 'website:index' %}" class="primary-btn text-uppercase">
+                    Back to Home
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- End 404 Area -->
+
+{% endblock %}
