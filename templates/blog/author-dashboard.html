@@ -1,23 +1,168 @@
-<h1>My Posts</h1>
 
-{% if posts %}
-    <ul>
-        {% for post in posts %}
-            <li>
-                <strong>{{ post.title }}</strong>
-                <br>
-                Published: {{ post.publish_date }}
-                <br>
-                <a href="{% url "blog:edit_post" pid=post.id %}">
-                    Edit
-                </a>
-                |
-                <a href="{% url 'blog:delete_post' pid=post.id %}">
-                    Delete
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>You haven't created any posts yet.</p>
-{% endif %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Start Dashboard Banner -->
+<section class="about-banner relative">
+    <div class="overlay overlay-bg"></div>
+
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Author Dashboard</h1>
+                <p class="text-white">
+                    Manage your stories and travel experiences
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Dashboard Banner -->
+
+
+<!-- Start Dashboard Area -->
+<section class="blog-area section-gap">
+    <div class="container">
+
+        <!-- Dashboard Title -->
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-50 col-lg-8">
+                <div class="title text-center">
+
+                    <h1 class="mb-10">My Posts</h1>
+
+                    <p>
+                        Manage and edit the stories you have shared with the world.
+                    </p>
+
+                    {% if posts %}
+                        <a href="{% url 'blog:create_post' %}"
+                           class="genric-btn primary radius mt-20">
+                            Create New Post
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+
+        {% if posts %}
+
+        <div class="row">
+
+            {% for post in posts %}
+
+            <div class="col-lg-6 col-md-6 mb-40">
+
+                <div class="single-blog-post">
+
+                    <!-- Post Image -->
+                    {% if post.image %}
+                    <div class="thumb">
+                        <img class="img-fluid"
+                             src="{{ post.image.url }}"
+                             alt="{{ post.title }}">
+                    </div>
+                    {% endif %}
+
+
+                    <!-- Post Details -->
+                    <div class="details">
+
+                        <h4 class="mt-20">
+                            {{ post.title }}
+                        </h4>
+
+                        <p class="mt-10">
+                            Published:
+
+                            {% if post.publish_date %}
+                                {{ post.publish_date|date:"M d, Y" }}
+                            {% else %}
+                                Not scheduled
+                            {% endif %}
+                        </p>
+
+
+                        <!-- Status -->
+                        <div class="mt-15">
+
+                            {% if post.status %}
+                                <span class="genric-btn success-border radius small">
+                                    Published
+                                </span>
+                            {% else %}
+                                <span class="genric-btn warning-border radius small">
+                                    Draft
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Actions -->
+                        <div class="mt-20">
+
+                            <a href="{% url 'blog:edit_post' pid=post.id %}"
+                               class="genric-btn primary radius">
+                                Edit Post
+                            </a>
+
+                            <a href="{% url 'blog:delete_post' pid=post.id %}"
+                               class="genric-btn danger radius">
+                                Delete Post
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <!-- Empty Dashboard -->
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8 text-center">
+
+                <div class="single-blog-post">
+
+                    <div class="details">
+
+                        <h3>No Posts Yet</h3>
+
+                        <p class="mt-20">
+                            You haven't created any posts yet.
+                            Start sharing your travel experiences with the world.
+                        </p>
+
+                        <a href="{% url 'blog:create_post' %}"
+                           class="genric-btn primary radius mt-20">
+                            Create Your First Post
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+</section>
+<!-- End Dashboard Area -->
+
+{% endblock %}
