@@ -4503,7 +4503,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 70pt;
   object-fit: cover;
 }
-/* ------------ */
+/* ------delete post------ */
 .delete-section {
     position: relative;
     background-size: cover;
@@ -4532,4 +4532,58 @@ body.mobile-nav-active #mobile-nav-toggle {
 .delete-post-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+/* ----login----- */
+.login-section {
+    position: relative;
+    min-height: 700px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+
+    padding: 80px 0;
+}
+
+.login-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.40);
+}
+
+.login-section > .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 45px 40px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.20);
+    transition: all 0.3s ease 0s;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+.login-card h3 {
+    font-size: 28px;
+}
+
+.login-card p {
+    color: #777;
+}
+
+.login-card a {
+    color: #f7631b;
+}
+
+.login-card .alert {
+    text-align: left;
 }
