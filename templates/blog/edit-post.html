@@ -1,11 +1,311 @@
-<h1>Edit Post</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<form method="POST" enctype="multipart/form-data">
+{% block content %}
 
-    {% csrf_token %}
+<!-- start banner Area -->
+<section class="relative about-banner">
+    <div class="overlay overlay-bg"></div>
 
-    {{ form.as_p }}
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
 
-    <button type="submit">Save Changes</button>
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Edit Post
+                </h1>
 
-</form>
+                <p class="text-white link-nav">
+                    <a href="{% url 'blog:index' %}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span>
+                    Edit Post
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+
+
+<!-- Start Edit Post Area -->
+<section class="contact-page-area section-gap">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-10">
+
+                <h3 class="mb-30">
+                    Edit Post
+                </h3>
+
+
+                <form
+                    class="form-area contact-form"
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+
+                    {% if form.errors %}
+
+                        <div class="alert alert-danger mb-30">
+
+                            <strong>Please fix the following errors:</strong>
+
+                            <ul class="mt-10">
+
+                                {% for field in form %}
+
+                                    {% for error in field.errors %}
+
+                                        <li>
+                                            <strong>{{ field.label }}:</strong>
+                                            {{ error }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                {% endfor %}
+
+
+                                {% for error in form.non_field_errors %}
+
+                                    <li>{{ error }}</li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% csrf_token %}
+
+
+                    <div class="row">
+
+
+                        <!-- LEFT COLUMN -->
+                        <div class="col-lg-6 form-group">
+
+
+                            <!-- Title -->
+                            <input
+                                name="title"
+                                placeholder="Post Title"
+                                value="{{ form.title.value|default_if_none:'' }}"
+                                onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Post Title'"
+                                class="common-input mb-20 form-control"
+                                required
+                                type="text"
+                            >
+
+
+                            <!-- Image -->
+                            <label class="mb-10">
+                                Featured Image
+                            </label>
+
+                            {% if post.image %}
+
+                                <div class="mb-20">
+
+                                    <img
+                                        src="{{ post.image.url }}"
+                                        alt="{{ post.title }}"
+                                        style="max-width: 200px; height: auto;"
+                                    >
+
+                                </div>
+
+                            {% endif %}
+
+                            <input
+                                name="image"
+                                class="common-input mb-20 form-control"
+                                type="file"
+                            >
+
+
+                            <!-- Tags -->
+                            <input
+                                name="tags"
+                                placeholder="Tags (travel, adventure, nature...)"
+                                value="{% if form.is_bound %}{{ form.tags.value|default_if_none:'' }}{% else %}{{ post.tags.all|join:', ' }}{% endif %}"
+                                onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Tags (travel, adventure, nature...)'"
+                                class="common-input mb-20 form-control"
+                                type="text"
+                            >
+
+
+                            <!-- Publish Date -->
+                            <input
+                                name="publish_date"
+                                value="{% if form.is_bound %}{{ form.publish_date.value|default_if_none:'' }}{% else %}{{ post.publish_date|date:'Y-m-d\TH:i' }}{% endif %}"
+                                class="common-input mb-20 form-control"
+                                type="datetime-local"
+                            >
+
+                        </div>
+
+
+                        <!-- RIGHT COLUMN -->
+                        <div class="col-lg-6 form-group">
+
+
+                            <!-- Content -->
+                            <textarea
+                                class="common-textarea form-control"
+                                name="content"
+                                placeholder="Write your travel story..."
+                                onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Write your travel story...'"
+                                required
+                            >{{ form.content.value|default_if_none:'' }}</textarea>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+                        <div class="col-lg-12 form-group">
+
+                            <label class="mb-10">
+                                Category
+                            </label>
+
+                            <select
+                                name="category"
+                                class="common-input form-control"
+                                multiple
+                                required
+                                style="height: 120px;"
+                            >
+
+                                {% for category in form.fields.category.queryset %}
+
+                                    <option
+                                        value="{{ category.id }}"
+                                        {% for selected_category in post.category.all %}
+                                            {% if category.id == selected_category.id %}
+                                                selected
+                                            {% endif %}
+                                        {% endfor %}
+                                    >
+                                        {{ category.name }}
+                                    </option>
+                                
+                                {% endfor %}
+                                
+                            </select>
+
+                        </div>
+
+
+                        <!-- OPTIONS -->
+                        <div class="col-lg-12 form-group">
+
+                            <div class="row">
+
+
+                                <!-- Login Required -->
+                                <div class="col-lg-6">
+
+                                    <div class="switch-wrap d-flex align-items-center">
+
+                                        <p class="mb-0 mr-20">
+                                            Require Login to Read
+                                        </p>
+
+                                        <div class="primary-checkbox">
+
+                                            <input
+                                                type="checkbox"
+                                                name="login_require"
+                                                id="login_require"
+                                                {% if form.login_require.value %}checked{% endif %}
+                                            >
+
+                                            <label for="login_require"></label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Status -->
+                                <div class="col-lg-6">
+
+                                    <div class="switch-wrap d-flex align-items-center">
+
+                                        <p class="mb-0 mr-20">
+                                            Publish Post
+                                        </p>
+
+                                        <div class="primary-checkbox">
+
+                                            <input
+                                                type="checkbox"
+                                                name="status"
+                                                id="status"
+                                                {% if form.status.value %}checked{% endif %}
+                                            >
+
+                                            <label for="status"></label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+                        <div class="col-lg-12">
+
+                            <div class="text-right">
+
+                                <a
+                                    href="{% url 'blog:dashboard' %}"
+                                    class="genric-btn primary-border"
+                                >
+                                    Cancel
+                                </a>
+
+                                <button
+                                    type="submit"
+                                    class="genric-btn primary"
+                                >
+                                    Save Changes
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- End Edit Post Area -->
+
+{% endblock %}
