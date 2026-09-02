@@ -9,7 +9,13 @@
     {% endwith %}
 {% endif %}
 <div class="single-sidebar-widget user-info-widget">
-	<img src="{{writer.profile.avatar.url}}" alt="">
+
+	{% if writer.profile.avatar %}
+    	<img src="{{writer.profile.avatar.url}}" alt="">
+	{% else %}
+    	<img src="{% static 'img/blog/default-avatar.png' %}" alt="">
+	{% endif %}
+
 	<a href="#"><h4>{{writer.get_full_name}}</h4></a>
 	<p>
 		{{writer.profile.job_title}}
