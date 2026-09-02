@@ -4503,3 +4503,33 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 70pt;
   object-fit: cover;
 }
+/* ------------ */
+.delete-section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.delete-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.delete-section > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.delete-post-card {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.20);
+    transition: all 0.3s ease 0s;
+}
+
+.delete-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}

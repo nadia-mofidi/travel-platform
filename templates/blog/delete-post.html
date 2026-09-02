@@ -1,16 +1,64 @@
-<h1>Delete Post</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<p>
-    Are you sure you want to delete
-    "<strong>{{ post.title }}</strong>"?
-</p>
+{% block content %}
 
-<form method="POST">
+<section
+    class="destinations-area section-gap delete-section"
+    style="background-image: url('{% static 'img/about-img.jpg' %}');"
+>
+    <div class="container">
 
-    {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
 
-    <a href="{% url 'blog:dashboard' %}">Cancel</a>
+                <div class="single-destinations delete-post-card text-center">
 
-    <button type="submit">Delete Post</button>
+                    <div class="details">
 
-</form>
+                        <h3 class="mb-20">
+                            Delete Post
+                        </h3>
+
+                        <p class="mb-10">
+                            Are you sure you want to delete
+                        </p>
+
+                        <h4 class="mb-30">
+                            "{{ post.title }}"
+                        </h4>
+
+                        <p class="mb-30">
+                            This action cannot be undone.
+                        </p>
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <a
+                                href="{% url 'blog:dashboard' %}"
+                                class="genric-btn primary-border radius mr-10"
+                            >
+                                Cancel
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="genric-btn danger radius"
+                            >
+                                Delete Post
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
