@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from accounts.forms import SignupForm,UserProfileForm,ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from utils.messages import error_message,success_message
 # Create your views here.
 def signup_view(request):
     if request.user.is_authenticated:
@@ -13,7 +14,10 @@ def signup_view(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            success_message(request, 'Your account has been created successfully! Welcome to our travel community.')
             return redirect('accounts:login')
+        else:
+            error_message(request, 'We couldn’t create your account. Please check the form and try again.')
     else:
         form = SignupForm()
     context = {'form':form}
@@ -29,10 +33,14 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
 
+            success_message(request, 'Welcome back! You have successfully logged in.')
             next_url = request.POST.get('next')
             if next_url:
                 return redirect(next_url)
+            
             return redirect('/')
+        else:
+            error_message(request, 'Couldn\'t log you in. Please try again.')
     else:
         form = AuthenticationForm()
 
@@ -69,8 +77,10 @@ def edit_profile_view(request):
             user_form.save()
             profile_form.save()
 
+            success_message(request, 'Your profile has been updated successfully!')
             return redirect('accounts:profile')
-
+        else:
+            error_message(request, 'We couldn’t update your profile. Please check the form and try again.')
     else:
 
         user_form = UserProfileForm(instance=request.user)

@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import author_required
 import re
+from utils.messages import error_message,success_message
+
 def blog_view (request,cat_name=None,auth_username=None,**kwargs):
 
     posts = Post.objects.filter(status=1,publish_date__lte=timezone.now()).select_related('author'
@@ -65,11 +67,11 @@ def blog_single (request,pid):
                 comment.email = request.user.email
 
             comment.save()
-            messages.add_message(request,messages.SUCCESS,'Your comment has been submitted and is awaiting approval.')
+            success_message(request,'Your comment has been submitted and is awaiting approval.')
             
             return redirect('blog:single', pid=post.id)
         else:
-            messages.add_message(request,messages.ERROR,'Your comment couldn\'t be submitted')
+            error_message(request,'Your comment couldn\'t be submitted')
     else:
         form = CommentForm( user=request.user)
     
@@ -123,8 +125,10 @@ def create_post(request):
 
             form.save_m2m()
 
+            success_message(request, 'Your post has been created successfully!')
             return redirect('blog:dashboard')
-        
+        else:
+            error_message(request, 'We couldn’t create your post. Please check the form and try again.')
     else:
         form = PostForm()
 
@@ -143,8 +147,11 @@ def edit_post(request, pid):
 
         if form.is_valid():
             form.save()
-            return redirect('blog:dashboard')
 
+            success_message(request, 'Your post has been updated successfully!')
+            return redirect('blog:dashboard')
+        else:
+            error_message(request, 'We couldn’t update your post. Please check the form and try again.')
     else:
         form = PostForm(instance=post)
 
@@ -159,6 +166,7 @@ def delete_post(request, pid):
 
     if request.method == 'POST':
         post.delete()
+        success_message(request, f'Your post "{post.title[:10]}..." has been deleted successfully!')
         return redirect('blog:dashboard')
 
     return render(request, 'blog/delete-post.html', {'post': post})
