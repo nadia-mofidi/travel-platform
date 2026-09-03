@@ -75,19 +75,29 @@
 				          <li><a href="{% url 'website:index' %}">Home</a></li>
 				          <li><a href="{% url 'website:about' %}">About</a></li>
 				          <li><a href="{% url 'blog:index'%}">Blog</a></li>
-				          </li>	
-				          <li class="menu-has-children"><a href="">Pages</a>
-				            <ul>
-				            	  <li><a href="elements.html">Elements</a></li>
-						          <li class="menu-has-children"><a href="">Level 2 </a>
-						            <ul>
-						              <li><a href="#">Item One</a></li>
-						              <li><a href="#">Item Two</a></li>
-						            </ul>
-						          </li>					                		
-				            </ul>
-				          </li>					          					          		          
+				        
 				          <li><a href="{% url 'website:contact' %}">Contact</a></li>
+						
+						{% if request.user.is_authenticated %}
+						  <li class="menu-has-children"><a href="{% url 'accounts:profile' %}">Profile</a>
+						  	<ul>
+								<li ><a href="{% url 'accounts:profile' %}">View Profile Info</a></li>
+								<li ><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
+
+							</ul>
+						  </li>
+						 	{% for group in request.user.groups.all %}
+    						    {% if group.name == 'Authors' %}
+    						        <li class="menu-has-children" ><a href="{% url 'blog:dashboard' %}">Dashboard</a>
+									<ul>
+										<li ><a href="{% url 'blog:dashboard' %}">My Posts</a></li>
+										<li ><a href="{% url 'blog:create_post' %}">Create New Post</a></li>	
+									</ul>
+									</li>
+								{% endif %}
+    						{% endfor %}
+						{% endif %}
+						  
 				        </ul>
 				      </nav><!-- #nav-menu-container -->					      		  
 					</div>
