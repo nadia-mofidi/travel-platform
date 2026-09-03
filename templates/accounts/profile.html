@@ -1,35 +1,254 @@
-{% if request.user.profile.avatar %}
-    <img src="{{ request.user.profile.avatar.url }}" alt="Profile Avatar">
-{% endif %}
+{% extends 'base.html' %}
+{% load static %}
 
-<h2>
-    {{ request.user.get_full_name|default:request.user.username }}
-</h2>
+{% block content %}
 
-<p>Username: {{ request.user.username }}</p>
-<p>Email: {{ request.user.email }}</p>
+<section
+    class="login-section"
+    style="background-image: url('{% static 'img/banner-bg.jpg' %}');"
+>
+    <div class="container">
 
-{% if is_author %}
-    <p>Job Title: {{ request.user.profile.job_title }}</p>
-    <p>Bio: {{ request.user.profile.bio }}</p>
+        <div class="row justify-content-center align-items-center">
 
-    {% if request.user.profile.facebook %}
-        <p>Facebook: {{ request.user.profile.facebook }}</p>
-    {% endif %}
+            <div class="col-lg-8 col-md-10">
 
-    {% if request.user.profile.twitter %}
-        <p>Twitter: {{ request.user.profile.twitter }}</p>
-    {% endif %}
+                <div class="login-card">
 
-    {% if request.user.profile.github %}
-        <p>GitHub: {{ request.user.profile.github }}</p>
-    {% endif %}
+                    <div class="details">
 
-    {% if request.user.profile.behance %}
-        <p>Behance: {{ request.user.profile.behance }}</p>
-    {% endif %}
-{% endif %}
+                        <!-- Profile Header -->
 
-<a href="{% url 'accounts:edit_profile' %}">
-    Edit Profile
-</a>
+                        <div class="text-center">
+
+                            {% if request.user.profile.avatar %}
+
+                                <div class="mb-20">
+
+                                    <img
+                                        src="{{ request.user.profile.avatar.url }}"
+                                        alt="Profile Avatar"
+                                        style="
+                                            width: 130px;
+                                            height: 130px;
+                                            object-fit: cover;
+                                            border-radius: 50%;
+                                        "
+                                    >
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <h3 class="mb-10">
+                                {{ request.user.get_full_name|default:request.user.username }}
+                            </h3>
+
+                            <p class="mb-30">
+                                @{{ request.user.username }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- Account Information -->
+
+                        <h4 class="mb-20">
+                            Account Information
+                        </h4>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 form-group">
+
+                                <label class="mb-10">
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="{{ request.user.username }}"
+                                    class="common-input mb-20 form-control"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="col-lg-6 form-group">
+
+                                <label class="mb-10">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    value="{{ request.user.email }}"
+                                    class="common-input mb-20 form-control"
+                                    readonly
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        {% if is_author %}
+
+                            <!-- Profile Information -->
+
+                            <h4 class="mb-20 mt-30">
+                                Profile Information
+                            </h4>
+
+
+                            <div class="row">
+
+                                {% if request.user.profile.job_title %}
+
+                                    <div class="col-lg-12 form-group">
+
+                                        <label class="mb-10">
+                                            Job Title
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            value="{{ request.user.profile.job_title }}"
+                                            class="common-input mb-20 form-control"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.user.profile.bio %}
+
+                                    <div class="col-lg-12 form-group">
+
+                                        <label class="mb-10">
+                                            Bio
+                                        </label>
+
+                                        <textarea
+                                            class="common-textarea form-control mb-20"
+                                            readonly
+                                        >{{ request.user.profile.bio }}</textarea>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.user.profile.facebook %}
+
+                                    <div class="col-lg-6 form-group">
+
+                                        <label class="mb-10">
+                                            Facebook
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            value="{{ request.user.profile.facebook }}"
+                                            class="common-input mb-20 form-control"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.user.profile.twitter %}
+
+                                    <div class="col-lg-6 form-group">
+
+                                        <label class="mb-10">
+                                            Twitter
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            value="{{ request.user.profile.twitter }}"
+                                            class="common-input mb-20 form-control"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.user.profile.github %}
+
+                                    <div class="col-lg-6 form-group">
+
+                                        <label class="mb-10">
+                                            GitHub
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            value="{{ request.user.profile.github }}"
+                                            class="common-input mb-20 form-control"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.user.profile.behance %}
+
+                                    <div class="col-lg-6 form-group">
+
+                                        <label class="mb-10">
+                                            Behance
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            value="{{ request.user.profile.behance }}"
+                                            class="common-input mb-20 form-control"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- Edit Profile Button -->
+
+                        <div class="text-center mt-20">
+
+                            <a
+                                href="{% url 'accounts:edit_profile' %}"
+                                class="genric-btn primary radius"
+                            >
+                                Edit Profile
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

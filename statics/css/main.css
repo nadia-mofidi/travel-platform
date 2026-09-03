@@ -4587,3 +4587,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 .login-card .alert {
     text-align: left;
 }
+/* ----profile---- */
+.login-section {
+    padding-top: 120px;
+    padding-bottom: 40px;
+}

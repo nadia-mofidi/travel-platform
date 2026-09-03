@@ -25,8 +25,11 @@ class SignupForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['username','first_name', 'last_name', 'email']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        self.fields['username'].disabled = True
 
 class ProfileForm(forms.ModelForm):
     class Meta:

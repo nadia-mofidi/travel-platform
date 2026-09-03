@@ -1,4 +1,377 @@
-<form method="POST" enctype="multipart/form-data">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section
+    class="login-section"
+    style="background-image: url('{% static 'img/prof-bg.jpg' %}');"
+>
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-lg-8 col-md-10">
+
+                <div class="login-card">
+
+                    <div class="details">
+
+                        <!-- Page Title -->
+
+                        <div class="text-center">
+
+                            <h3 class="mb-10">
+                                My Profile
+                            </h3>
+
+                            <p class="mb-30">
+                                Update your account and profile information
+                            </p>
+
+                        </div>
+
+
+                        <!-- Error Messages -->
+
+                        {% if user_form.errors or profile_form.errors %}
+
+                            <div class="alert alert-danger mb-30">
+
+                                <strong>
+                                    Please fix the following errors:
+                                </strong>
+
+                                <ul class="mt-10 mb-0">
+
+                                    {% for field in user_form %}
+
+                                        {% for error in field.errors %}
+
+                                            <li>
+                                                <strong>
+                                                    {{ field.label }}:
+                                                </strong>
+
+                                                {{ error }}
+                                            </li>
+
+                                        {% endfor %}
+
+                                    {% endfor %}
+
+
+                                    {% for field in profile_form %}
+
+                                        {% for error in field.errors %}
+
+                                            <li>
+                                                <strong>
+                                                    {{ field.label }}:
+                                                </strong>
+
+                                                {{ error }}
+                                            </li>
+
+                                        {% endfor %}
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- Main Form -->
+
+                        <form
+                            method="POST"
+                            enctype="multipart/form-data"
+                            class="form-area"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <!-- Profile Picture -->
+
+                            <div class="text-center mb-40">
+
+                                <label class="d-block mb-15">
+                                    Profile Picture
+                                </label>
+
+
+                                {% if profile_form.instance.avatar %}
+
+                                    <div class="mb-15">
+
+                                        <img
+                                            src="{{ profile_form.instance.avatar.url }}"
+                                            alt="Profile Picture"
+                                            style="
+                                                width: 120px;
+                                                height: 120px;
+                                                object-fit: cover;
+                                                border-radius: 50%;
+                                            "
+                                        >
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <input
+                                    type="file"
+                                    name="avatar"
+                                    class="common-input form-control"
+                                >
+
+                            </div>
+
+
+                            <!-- Account Information -->
+
+                            <h4 class="mb-20">
+                                Account Information
+                            </h4>
+
+
+                            <div class="row">
+
+                                <!-- Username -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Username
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        value="{{ user_form.username.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                        required
+                                        readonly
+                                    >
+
+                                </div>
+
+
+                                <!-- Email -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Email Address
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value="{{ user_form.email.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- First Name -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        First Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="first_name"
+                                        value="{{ user_form.first_name.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+
+                                <!-- Last Name -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Last Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="last_name"
+                                        value="{{ user_form.last_name.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Profile Information -->
+
+                            <h4 class="mb-20 mt-30">
+                                Profile Information
+                            </h4>
+
+
+                            <div class="row">
+
+                                <!-- Job Title -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Job Title
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="job_title"
+                                        value="{{ profile_form.job_title.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+
+                                <!-- Bio -->
+
+                                <div class="col-lg-12 form-group">
+
+                                    <label class="mb-10">
+                                        Bio
+                                    </label>
+
+                                    <textarea
+                                        name="bio"
+                                        class="common-textarea form-control mb-20"
+                                    >{{ profile_form.bio.value|default_if_none:'' }}</textarea>
+
+                                </div>
+
+
+                                <!-- Facebook -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Facebook
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        name="facebook"
+                                        value="{{ profile_form.facebook.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+
+                                <!-- Twitter -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Twitter
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        name="twitter"
+                                        value="{{ profile_form.twitter.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+
+                                <!-- GitHub -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        GitHub
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        name="github"
+                                        value="{{ profile_form.github.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+
+                                <!-- Behance -->
+
+                                <div class="col-lg-6 form-group">
+
+                                    <label class="mb-10">
+                                        Behance
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        name="behance"
+                                        value="{{ profile_form.behance.value|default_if_none:'' }}"
+                                        class="common-input mb-20 form-control"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Buttons -->
+
+                            <div class="text-center mt-20">
+
+                                <a
+                                    href="{% url 'blog:index' %}"
+                                    class="genric-btn primary-border radius mr-10"
+                                >
+                                    Cancel
+                                </a>
+
+                                <button
+                                    type="submit"
+                                    class="genric-btn primary radius"
+                                >
+                                    Save Changes
+                                </button>
+
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+{% comment %} <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
     <h3>Account Information</h3>
@@ -8,4 +381,4 @@
     {{ profile_form.as_p }}
 
     <button type="submit">Save Changes</button>
-</form>
+</form> {% endcomment %}
