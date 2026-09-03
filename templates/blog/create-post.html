@@ -118,15 +118,7 @@
                         <div class="col-lg-6 form-group">
 
                             <!-- Content -->
-                            <textarea
-                                class="common-textarea form-control"
-                                name="content"
-                                placeholder="Write your travel story..."
-                                onfocus="this.placeholder = ''"
-                                onblur="this.placeholder = 'Write your travel story...'"
-                                required
-                            >{{ form.content.value|default_if_none:'' }}</textarea>
-
+                            {{ form.content }}
                         </div>
 
 

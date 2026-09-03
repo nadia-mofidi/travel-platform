@@ -32,5 +32,19 @@ class PostForm(forms.ModelForm):
         ]
 
         widgets = {
-            'content': SummernoteWidget(),
+            'content': SummernoteWidget(
+                attrs={
+                    'summernote': {
+                        'width': '100%',
+                        'height': '350px',
+                        'toolbar': [
+                            ['style', ['style']],
+                            ['font', ['bold', 'italic', 'underline']],
+                            ['para', ['ul', 'ol']],
+                            ['insert', ['link', 'picture']],
+                            ['view', ['fullscreen']],
+                        ],
+                    }
+                }
+            )
         }
