@@ -17,7 +17,7 @@ class Profile(models.Model):
     )
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
-    github = models.URLField(blank=True)
+    instagram = models.URLField(blank=True)
     behance = models.URLField(blank=True)
 
     def __str__(self):

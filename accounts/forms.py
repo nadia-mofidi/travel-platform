@@ -40,7 +40,7 @@ class ProfileForm(forms.ModelForm):
             'avatar',
             'facebook',
             'twitter',
-            'github',
+            'instagram',
             'behance',
         ]
 
@@ -53,7 +53,7 @@ class ProfileForm(forms.ModelForm):
                 'bio',
                 'facebook',
                 'twitter',
-                'github',
+                'instagram',
                 'behance',
             ]
 
