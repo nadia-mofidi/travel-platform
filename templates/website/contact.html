@@ -55,16 +55,44 @@
 							</div>														
 						</div>
 						<div class="col-lg-8">
-							{% comment %} {% if messages %}
-								<ul class='messages'>
-									{% for message in messages %}
-									<li class='alert {% if message.tags %}alert-{{message.tags}}'{% endif %}>
-									{{message}}
-									</li>
-									{% endfor %}
-								</ul>
-							{% endif %} {% endcomment %}
+				
+				{% comment %}errors  {% endcomment %}
+					{% if form.errors %}
 
+                        <div class="alert alert-danger mb-30">
+
+                            <strong>Please fix the following errors:</strong>
+
+                            <ul class="mt-10">
+
+                                {% for field in form %}
+
+                                    {% for error in field.errors %}
+
+                                        <li>
+                                            <strong>{{ field.label }}:</strong>
+                                            {{ error }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                {% endfor %}
+
+
+                                {% for error in form.non_field_errors %}
+
+                                    <li>{{ error }}</li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+                    {% endif %}
+
+
+							
 							<form class="form-area contact-form text-right" action="{% url "website:contact" %}" method="post">
 								<div class="row">
 									{% csrf_token %}	
@@ -88,23 +116,7 @@
 								</div>
 								
 							</form>
-							{% if form.errors %}
-							<div class='alert alert-error'>
-								<h4>please fix the following errors</h4>
-								<ul>
-									{% for field in form %}
-										{% if field.errors %}
-											{% for error in field.errors %}
-											<li><a href="#id-{{field.name}}" class='error'>{{error|escape}}</a></li>
-											{% endfor %}
-										{% endif %}
-									{% endfor %}
-								</ul>
-								{% if form.non_field_errors %}
-									{{form.non_field_errors}}
-								{% endif %}
-							</div>
-							{% endif %}
+							
 							
 						</div>
 					</div>

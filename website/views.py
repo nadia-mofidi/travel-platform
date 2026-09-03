@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from website.forms import ContactForm,NewsletterForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from utils.messages import success_message, error_message
 
 # Create your views here.
 from django.http import HttpResponse
@@ -17,10 +18,12 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request,messages.SUCCESS,'Your ticket is submitted successfully')
+            success_message(request,'Your ticket is submitted successfully')
+            return redirect('/contact#form')
         else:
-            messages.add_message(request,messages.ERROR,'Your ticket couldn\'t be submitted')
-        return redirect('/contact#form')
+            error_message(request,'Your ticket couldn\'t be submitted')
+            return render(request,'website/contact.html',{'form':form})
+        
     form=ContactForm()
     return render(request,'website/contact.html',{'form':form})
 
@@ -29,6 +32,9 @@ def newsletter_view(request):
         form = NewsletterForm(request.POST)
         if form.is_valid():
             form.save()
+            success_message(request, 'You have successfully subscribed to our newsletter!')
             return HttpResponseRedirect('/')
+        else:
+            error_message(request, 'We couldn’t subscribe you to the newsletter. Please try again.')
     else:
         return HttpResponseRedirect('/')
