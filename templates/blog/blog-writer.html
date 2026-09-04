@@ -11,9 +11,13 @@
 <div class="single-sidebar-widget user-info-widget">
 
 	{% if writer.profile.avatar %}
-    	<img src="{{writer.profile.avatar.url}}" alt="">
+
+    <img src="{{ writer.profile.avatar.url }}" class="writer-avatar" alt="">
+
+	{% elif writer.profile.avatar_preset %}
+	    <img src="{% static 'img/avatars/' %}{{ writer.profile.avatar_preset }}" class="writer-avatar" alt="">
 	{% else %}
-    	<img src="{% static 'img/blog/default-avatar.png' %}" alt="">
+	    <img src="{% static 'img/blog/default-avatar.png' %}" class="writer-avatar" alt="">
 	{% endif %}
 
 	<a href="#"><h4>{{writer.get_full_name}}</h4></a>

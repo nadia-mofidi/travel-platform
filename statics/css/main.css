@@ -4592,3 +4592,52 @@ body.mobile-nav-active #mobile-nav-toggle {
     padding-top: 120px;
     padding-bottom: 40px;
 }
+/* avatars preset */
+.avatar-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.avatar-option {
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+}
+
+.avatar-option input {
+    display: none;
+}
+
+.avatar-option img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.avatar-option:hover img {
+    transform: translateY(-3px);
+}
+
+.avatar-option input:checked + img {
+    border-color: #f7631b;
+    box-shadow: 0 0 0 3px rgba(247, 99, 27, 0.15);
+}
+
+.current-avatar {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.writer-avatar {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+}
