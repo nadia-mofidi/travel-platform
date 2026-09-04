@@ -28,13 +28,15 @@ def contact_view(request):
     return render(request,'website/contact.html',{'form':form})
 
 def newsletter_view(request):
-    if request.method=="POST":
+    if request.method == "POST":
         form = NewsletterForm(request.POST)
         if form.is_valid():
             form.save()
-            success_message(request, 'You have successfully subscribed to our newsletter!')
-            return HttpResponseRedirect('/')
+
+            success_message(request,'You have successfully subscribed to our newsletter!')
+            return redirect('/')
         else:
-            error_message(request, 'We couldn’t subscribe you to the newsletter. Please try again.')
-    else:
-        return HttpResponseRedirect('/')
+            error_message(request,'We couldn’t subscribe to the newsletter. Please try again.')
+            return redirect('/')
+
+    return redirect('/')
