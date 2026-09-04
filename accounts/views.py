@@ -74,22 +74,68 @@ def edit_profile_view(request):
         )
 
         if user_form.is_valid() and profile_form.is_valid():
+
+            profile = request.user.profile
+
+            uploaded_avatar = request.FILES.get('avatar')
+            selected_preset = request.POST.get('avatar_preset')
+
+            old_avatar = profile.avatar.name if profile.avatar else None
+
             user_form.save()
             profile_form.save()
 
-            success_message(request, 'Your profile has been updated successfully!')
+            # Preset has priority
+            if selected_preset:
+
+                if old_avatar and profile.avatar:
+                    profile.avatar.delete(save=False)
+
+                profile.avatar = None
+                profile.avatar_preset = selected_preset
+                profile.save()
+
+            # Custom uploaded avatar
+            elif uploaded_avatar:
+
+                profile.avatar_preset = ''
+                profile.save()
+
+            success_message(
+                request,
+                'Your profile has been updated successfully!'
+            )
+
             return redirect('accounts:profile')
+
         else:
-            error_message(request, 'We couldn’t update your profile. Please check the form and try again.')
+            error_message(
+                request,
+                'We couldn’t update your profile. Please check the form and try again.'
+            )
+
     else:
 
-        user_form = UserProfileForm(instance=request.user)
+        user_form = UserProfileForm(
+            instance=request.user
+        )
 
-        profile_form = ProfileForm(instance=request.user.profile,is_author=is_author)
+        profile_form = ProfileForm(
+            instance=request.user.profile,
+            is_author=is_author
+        )
 
-    context = {'user_form': user_form,'profile_form': profile_form,'is_author': is_author}
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'is_author': is_author
+    }
 
-    return render(request,'accounts/edit-profile.html',context)
+    return render(
+        request,
+        'accounts/edit-profile.html',
+        context
+    )
 
 @login_required
 def profile_view(request):

@@ -95,41 +95,97 @@
                             {% csrf_token %}
 
 
+                            
                             <!-- Profile Picture -->
 
-                            <div class="text-center mb-40">
-
-                                <label class="d-block mb-15">
-                                    Profile Picture
-                                </label>
-
-
-                                {% if profile_form.instance.avatar %}
-
-                                    <div class="mb-15">
-
-                                        <img
-                                            src="{{ profile_form.instance.avatar.url }}"
-                                            alt="Profile Picture"
-                                            style="
-                                                width: 120px;
-                                                height: 120px;
-                                                object-fit: cover;
-                                                border-radius: 50%;
-                                            "
+                            <div class="row">
+                            
+                                <div class="col-lg-12 form-group">
+                                
+                                    <div class="text-center">
+                                    
+                                        <label class="mb-20">
+                                            Profile Avatar
+                                        </label>
+                                    
+                                        <!-- Current Avatar -->
+                                    
+                                        {% if request.user.profile.avatar %}
+                                    
+                                            <div class="mb-20">
+                                                <img
+                                                    id="profile-avatar-preview"
+                                                    src="{{ request.user.profile.avatar.url }}"
+                                                    alt="Current Avatar"
+                                                    class="current-avatar"
+                                                >
+                                            </div>
+                                        
+                                        {% elif request.user.profile.avatar_preset %}
+                                        
+                                            <div class="mb-20">
+                                            
+                                                <img
+                                                    id="profile-avatar-preview"
+                                                    src="{% static 'img/avatars/' %}{{ request.user.profile.avatar_preset }}"
+                                                    alt="Current Avatar"
+                                                    class="current-avatar"
+                                                >
+                                            
+                                            </div>
+                                        
+                                        {% endif %}
+                                        
+                                        
+                                        <!-- Preset Avatars -->
+                                        
+                                        <p class="mb-20">
+                                            Choose an avatar
+                                        </p>
+                                    
+                                        <div class="avatar-options">
+                                        
+                                            {% for avatar in "123456" %}
+                                        
+                                                <label class="avatar-option">
+                                                
+                                                    <input
+                                                        type="radio"
+                                                        name="avatar_preset"
+                                                        value="avatar{{ avatar }}.png"
+                                                        {% if request.user.profile.avatar_preset == "avatar"|add:avatar|add:".png" %}
+                                                            checked
+                                                        {% endif %}
+                                                    >
+                                                
+                                                    <img
+                                                        src="{% static 'img/avatars/avatar' %}{{ avatar }}.png"
+                                                        alt="Avatar {{ avatar }}"
+                                                    >
+                                                
+                                                </label>
+                                            
+                                            {% endfor %}
+                                            
+                                        </div>
+                                    
+                                    
+                                        <!-- Upload -->
+                                    
+                                        <p class="mt-30 mb-10">
+                                            Or upload your own image
+                                        </p>
+                                    
+                                        <input
+                                            name="avatar"
+                                            class="common-input mb-20 form-control"
+                                            type="file"
                                         >
-
+                                    
                                     </div>
-
-                                {% endif %}
-
-
-                                <input
-                                    type="file"
-                                    name="avatar"
-                                    class="common-input form-control"
-                                >
-
+                                
+                                </div>
+                            
                             </div>
 
 
@@ -370,15 +426,30 @@
     </div>
 </section>
 
+<script>
+    const avatarFileInput = document.querySelector('input[name="avatar"]');
+    const avatarPresets = document.querySelectorAll('input[name="avatar_preset"]');
+    const avatarPreview = document.querySelector('#profile-avatar-preview');
+
+    avatarFileInput.addEventListener('change', function () {
+
+        if (this.files.length > 0) {
+
+            // Remove preset selection
+            avatarPresets.forEach(function (preset) {
+                preset.checked = false;
+            });
+
+            // Show uploaded image immediately
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                avatarPreview.src = event.target.result;
+            };
+
+            reader.readAsDataURL(this.files[0]);
+        }
+
+    });
+</script>
 {% endblock %}
-{% comment %} <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <h3>Account Information</h3>
-    {{ user_form.as_p }}
-
-    <h3>Profile Information</h3>
-    {{ profile_form.as_p }}
-
-    <button type="submit">Save Changes</button>
-</form> {% endcomment %}
