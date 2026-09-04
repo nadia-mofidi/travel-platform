@@ -60,3 +60,20 @@ class ProfileForm(forms.ModelForm):
 
             for field in author_fields:
                 self.fields.pop(field)
+
+    def clean_avatar_preset(self):
+        avatar_preset = self.cleaned_data.get('avatar_preset')
+    
+        allowed_presets = [
+            'avatar1.png',
+            'avatar2.png',
+            'avatar3.png',
+            'avatar4.png',
+            'avatar5.png',
+            'avatar6.png',
+        ]
+    
+        if avatar_preset and avatar_preset not in allowed_presets:
+            raise forms.ValidationError('Invalid avatar selection.')
+    
+        return avatar_preset
