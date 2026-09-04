@@ -6,7 +6,7 @@
 						<div class="menu-content pb-60 col-lg-9">
 							<div class="title text-center">
 								<h1 class="mb-10">Latest from Our Blog</h1>
-								<p>With the exception of Nietzsche, no other madman has contributed so much to human sanity as has.</p>
+								<p>Read our latest travel stories, guides, and destination tips.</p>
 							</div>
 						</div>
 					</div>							
@@ -30,7 +30,7 @@
 									</div>
 									<a href="{% url "blog:single" pid=post.id %}"><h4 class="title">{{post.title}}</h4></a>
 									<p>
-										{{post.content|truncatewords:5|safe}}
+										{{post.content|truncatechars:80|safe}}
 									</p>
 									<h6 class="date">{{post.publish_date.month|ordinal}}{{post.publish_date|date:" F, Y"}}</h6>
 								</div>	
