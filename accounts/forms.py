@@ -38,6 +38,7 @@ class ProfileForm(forms.ModelForm):
             'job_title',
             'bio',
             'avatar',
+            'avatar_preset',
             'facebook',
             'twitter',
             'instagram',
