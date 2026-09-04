@@ -6,6 +6,7 @@ from accounts.forms import SignupForm,UserProfileForm,ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from utils.messages import error_message,success_message
+from django.utils.http import url_has_allowed_host_and_scheme
 # Create your views here.
 def signup_view(request):
     if request.user.is_authenticated:
@@ -35,7 +36,11 @@ def login_view(request):
 
             success_message(request, 'Welcome back! You have successfully logged in.')
             next_url = request.POST.get('next')
-            if next_url:
+
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url,
+                allowed_hosts={request.get_host()}
+            ):
                 return redirect(next_url)
             
             return redirect('/')
