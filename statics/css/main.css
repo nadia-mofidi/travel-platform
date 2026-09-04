@@ -4641,3 +4641,24 @@ body.mobile-nav-active #mobile-nav-toggle {
     object-fit: cover;
     border-radius: 50%;
 }
+/* hero */
+.hero-title {
+    white-space: nowrap;
+}
+/* images */
+.img-popular-destination{
+  height: 150pt;
+  object-fit: cover;
+}
+.img-featured{
+  height: 110pt;
+  object-fit: cover;
+}
+.img-post{
+  height: 260pt;
+  object-fit: cover;
+}
+.img-single-post{
+  height: 300pt;
+  object-fit: cover;
+}

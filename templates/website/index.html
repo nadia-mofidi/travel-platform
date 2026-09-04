@@ -10,7 +10,7 @@
 					<div class="row fullscreen align-items-center justify-content-between">
 						<div class="col-lg-6 col-md-6 banner-left">
 							<h6 class="text-white">YOUR NEXT JOURNEY STARTS HERE</h6>
-							<h1 class="text-white">EXPLORE THE WORLD</h1>
+							<h1 class="text-white hero-title">EXPLORE THE WORLD</h1>
 							<p class="text-white">
 								Discover inspiring destinations, travel stories, and experiences
 								worth remembering.							
@@ -39,12 +39,12 @@
 							<div class="single-destination relative">
 								<div class="thumb relative">
 									<div class="overlay overlay-bg"></div>
-									<img class="img-fluid" src="{% static 'img/d1.jpg' %}" alt="">
+									<img class="img-fluid img-popular-destination" src="{% static 'img/d2.jpg' %}" alt="">
 								</div>
 								<div class="desc">	
-									<a href="#" class="price-btn">$150</a>			
-									<h4>Mountain River</h4>
-									<p>Paraguay</p>			
+									<a href="{% url "blog:tags" tag_name='France' %}" class="price-btn">view page</a>			
+									<h4>Timeless Romance</h4>
+									<p>France</p>			
 								</div>
 							</div>
 						</div>
@@ -52,12 +52,12 @@
 							<div class="single-destination relative">
 								<div class="thumb relative">
 									<div class="overlay overlay-bg"></div>
-									<img class="img-fluid" src="{% static 'img/d2.jpg' %}" alt="">
+									<img class="img-fluid img-popular-destination" src="{% static 'img/pd2.jpg' %}" alt="">
 								</div>
 								<div class="desc">	
-									<a href="#" class="price-btn">$250</a>			
-									<h4>Dream City</h4>
-									<p>Paris</p>			
+									<a href="{% url "blog:tags" tag_name='England' %}" class="price-btn">view page</a>			
+									<h4>Hidden Stories</h4>
+									<p>England</p>			
 								</div>
 							</div>
 						</div>
@@ -65,12 +65,12 @@
 							<div class="single-destination relative">
 								<div class="thumb relative">
 									<div class="overlay overlay-bg"></div>
-									<img class="img-fluid" src="{% static 'img/d3.jpg' %}" alt="">
+									<img class="img-fluid img-popular-destination" src="{% static 'img/pd1.jpg' %}" alt="">
 								</div>
 								<div class="desc">	
-									<a href="#" class="price-btn">$350</a>			
-									<h4>Cloud Mountain</h4>
-									<p>Sri Lanka</p>			
+									<a href="{% url "blog:tags" tag_name='Iran' %}" class="price-btn">view page</a>			
+									<h4>Lost Empire</h4>
+									<p>Iran</p>			
 								</div>
 							</div>
 						</div>												
