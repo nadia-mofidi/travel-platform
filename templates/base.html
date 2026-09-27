@@ -48,7 +48,7 @@
 			  					<li><a href="{% url 'accounts:profile' %}">Logged in as {{request.user.username}}</a></li>
 								<li><a href="{% url "accounts:logout" %}">logout</a></li>
 								{% else %}
-								<li>guest user</li>
+								<li><span style="color:#f8b600">guest user</span></li>
 								<li><a href="{% url "accounts:login" %}">login</a></li>
 								<li><a href="{% url "accounts:signup" %}">signup</a></li>
 								{% endif %}
@@ -116,30 +116,30 @@
 					<div class="row">
 						<div class="col-lg-3  col-md-6 col-sm-6">
 							<div class="single-footer-widget">
-								<h6>About Agency</h6>
+								<h6>About Travelista</h6>
 								<p>
-									The world has become so fast paced that people don’t want to stand by reading a page of information, they would much rather look at a presentation and understand the message. It has come to a point 
+								Travelista is a travel blog for discovering new places, sharing experiences, and turning journeys into stories. Explore destinations, travel tips, and personal experiences from around the world.							
 								</p>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-6">
 							<div class="single-footer-widget">
-								<h6>Navigation Links</h6>
+								<h6>Explore</h6>
 								<div class="row">
 									<div class="col">
 										<ul>
-											<li><a href="#">Home</a></li>
-											<li><a href="#">Feature</a></li>
-											<li><a href="#">Services</a></li>
-											<li><a href="#">Portfolio</a></li>
+											<li><a href="{% url "website:index" %}">Home</a></li>
+											<li><a href="{% url "website:about" %}">About Us</a></li>
+											<li><a href="{% url "blog:index" %}">Blog</a></li>
+											<li><a href="{% url "website:contact" %}">Contact Us</a></li>
 										</ul>
 									</div>
 									<div class="col">
 										<ul>
-											<li><a href="#">Team</a></li>
-											<li><a href="#">Pricing</a></li>
-											<li><a href="#">Blog</a></li>
-											<li><a href="#">Contact</a></li>
+											<li><a href="{% url "accounts:profile" %}">Your Profile</a></li>
+											<li><a href="{% url "accounts:signup" %}">Signup</a></li>
+											<li><a href="{% url "accounts:login" %}">Login</a></li>
+											<li><a href="{% url "accounts:logout" %}">Logout</a></li>
 										</ul>
 									</div>										
 								</div>							
@@ -149,13 +149,13 @@
 							<div class="single-footer-widget">
 								<h6>Newsletter</h6>
 								<p>
-									For business professionals caught between high OEM price and mediocre print and graphic output.									
+									Get new travel stories, destination ideas, and useful travel tips delivered to your inbox.
 								</p>								
 								<div>
 									<form action="{% url "website:newsletter" %}" method="post" class="subscription relative">
 										{% csrf_token %}
 										<div class="input-group d-flex flex-row">
-											<input name="email" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
+											<input name="email" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
 											<button class="btn bb-btn" type='submit'><span class="lnr lnr-location"></span></button>		
 										</div>									
 										<div class="mt-10 info"></div>
@@ -165,7 +165,7 @@
 						</div>
 						<div class="col-lg-3  col-md-6 col-sm-6">
 							<div class="single-footer-widget mail-chimp">
-								<h6 class="mb-20">InstaFeed</h6>
+								<h6 class="mb-20">Travel Moments</h6>
 								<ul class="instafeed d-flex flex-wrap">
 									<li><img src="{% static 'img/i1.jpg' %}" alt=""></li>
 									<li><img src="{% static 'img/i2.jpg' %}" alt=""></li>

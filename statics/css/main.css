@@ -3266,7 +3266,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* =================================== */
 /*============ Start Blog Home Styles  =============*/
 .blog-home-banner {
-  background: url(../img/blog/blog-home-banner.jpg) bottom;
+  background: url(../img/blog/blog-home-banner-new.jpg) bottom;
   background-size: cover;
   padding: 130px 0px;
 }
@@ -4660,5 +4660,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 .img-single-post{
   height: 300pt;
+  object-fit: cover;
+}
+.content-image{
+  height: 220px;
   object-fit: cover;
 }
